@@ -72,7 +72,8 @@ package
 		private var enemySpeed:int;
 		private var enemySpecial:int;
 		private var enemyRate:int; // the rate of the enemy's bar
-		private var enemyStatus:int;
+		private var enemyStatus:int
+		private var enemySkills:Array;
 		
 		// battle flow vars
 		
@@ -96,16 +97,16 @@ package
 		private var playerMove:Boolean; // move forward to attack?
 		private var enemyMove:Boolean; // move forward for certain moves
 		
-		private var playerAttackBonus:Boolean = false; // attack bonus?
-		private var playerDefenseBonus:Boolean = false;
-		private var playerSpeedBonus:Boolean = false;
-		private var playerSpecialBonus:Boolean = false; 
+		private var playerAttackBonus:int = 0; // attack bonus?
+		private var playerDefenseBonus:int = 0;
+		private var playerSpeedBonus:int = 0;
+		private var playerSpecialBonus:int = 0; 
 		private var playerCrazyRounds:int = 0; // number of really high agility rounds
 		
-		private var enemyAttackBonus:Boolean = false;
-		private var enemyDefenseBonus:Boolean = false;
-		private var enemySpeedBonus:Boolean = false;
-		private var enemySpecialBonus:Boolean = false;
+		private var enemyAttackBonus:int = 0;
+		private var enemyDefenseBonus:int = 0;
+		private var enemySpeedBonus:int = 0;
+		private var enemySpecialBonus:int = 0;
 		private var enemyCrazyRounds:int = 0; 
 		
 		// menu stuff
@@ -151,6 +152,7 @@ package
 			enemyDefense = FormulaTable.getDefense(StatsTable.MonsterDefense[enemyMonsterID], enemyLevel);
 			enemySpecial = FormulaTable.getSpecial(StatsTable.MonsterSpecial[enemyMonsterID], enemyLevel - 1);
 			enemySpeed = FormulaTable.getSpeed(StatsTable.MonsterSpeed[enemyMonsterID], enemyLevel - 1); 
+			enemySkills = StatsTable.MonsterSkills[enemyMonsterID];
 			
 			myCondition = eventCondition;
 			mySubValue = eventSub;
@@ -1067,45 +1069,101 @@ package
 				playerHP += amount;
 				playerHP = Math.min(playerHP, playerHPMax);
 				
-				add(new DamageMarker(95, 56, "+" + amount.toString()));
+				add(new DamageMarker(95, 56, "+" + amount.toString(), 0, 1));
 				animationTimer = 45;
 			}
 			else // heal the enemy
 			{
 				enemyHP += amount;
 				Math.min(enemyHP, enemyHPMax);
+				add(new DamageMarker(2, 17, "+" + amount.toString(), 0, 1));
+				animationTimer = 45;
 			}
 		}
 		
-		private function meleeAttack(skillID:int = 0, target:int = 0, multipleFlag:int = 0):void
+		private function healSkill(skillID:int = 0, target:int = 0):void
+		{
+			var amountOfHeal:int;
+		
+			amountOfHeal = Math.random() * 6 + DataTable.SkillSub[skillID];
+			restoreHP(amountOfHeal, target);
+		}
+		
+		private function buffSkill(skillID:int = 0, target:int = 0):void
+		{
+			
+		}
+		
+		private function specialSkill(skillID:int = 0, target:int = 0):void
+		{
+			if (skillID == 17) // blood suck
+			{
+				if (target == 0) // player attack
+				{
+					meleeAttack(17, 0, 1, 1);
+				}
+				else
+				{
+					meleeAttack(17, 1, 1, 1);
+				}
+			}
+			
+			// and.. the rest
+			if (DataTable.SkillSub[skillID] == 2) // lower attack
+			{
+				if (target == 0) // player
+				{
+					enemyAttackBonus = -1;
+					FlxG.play(SndMelee);
+					animationTimer = 25;
+					animationHalf = animationTimer / 1.5;
+					add(new DamageMarker(2, 17, "Atk -1"));
+					
+				}
+				if (target == 1) // enemy
+				{
+					playerAttackBonus = -1;
+					FlxG.play(SndMelee);
+					animationTimer = 25;
+					animationHalf = animationTimer / 1.5;
+					add(new DamageMarker(95, 56, "Atk -1"));
+				}
+			}
+			
+			if (DataTable.SkillSub[skillID] == 3) // lower defense
+			{
+				if (target == 0) // player
+				{
+					enemyDefenseBonus -= 1;
+					FlxG.play(SndMelee);
+					animationTimer = 25;
+					animationHalf = animationTimer / 1.5;
+					add(new DamageMarker(2, 17, "Def -1"));
+					
+				}
+				if (target == 1) // enemy
+				{
+					playerDefenseBonus -= 1;
+					FlxG.play(SndMelee);
+					animationTimer = 25;
+					animationHalf = animationTimer / 1.5;
+					add(new DamageMarker(95, 56, "Def -1"));
+				}
+			}
+		}
+		
+		private function magicAttack(skillID:int = 0, target:int = 0, multipleFlag:int = 0):void
 		{
 			var tempAttack:int;
-			var myHit:Boolean;
+			var myHit:Boolean = true;
 			
-			if (target == 0) // player attack
+			if (target == 0) // player
 			{
-				tempAttack = playerAttack;
-				
-				if (playerAttackBonus)
-					tempAttack *= 1.25; // attack bonus!
-				
-				myHit = true;
-				
-				//calculatedDamage = (DataTable.SkillSub[skillID] + (Math.random() * DataTable.SkillSub[skillID] * 3));
-				//calculatedDamage *= DataTable.SkillSub[skillID] * StatsTable.MonsterAttack[playerMonsterID];
+				calculatedDamage = DataTable.SkillSub[skillID];
 				
 				if(multipleFlag == 0) // to avoid infinite loops
 					playerNumberAttacks = DataTable.SkillNumber[skillID];
-				
-				calculatedDamage = (DataTable.SkillSub[skillID]) + (Math.random() * (DataTable.SkillSubAlt[skillID] * 1.5));
-				calculatedDamage *= ((tempAttack / 1.80) - (enemyDefense / 4)) * DataTable.SkillSubAlt[skillID];
-				calculatedDamage += Math.random() * ((tempAttack / 6) * DataTable.SkillSubAlt[skillID]);
-				calculatedDamage += Math.random() * (calculatedDamage / 10);
-				calculatedDamage -= (enemyDefense / 4.5);
-				
-				if (calculatedDamage < 0)
-					calculatedDamage = 0;
-				
+					
 				animationTimer = DataTable.SkillTime[skillID];
 				animationHalf = animationTimer / 1.5;
 				animation = true;
@@ -1120,34 +1178,20 @@ package
 				else
 				{
 					FlxG.play(SndMelee);
-					add(new BattleAnimation(2, 17, DataTable.SkillAnimation[skillID])); // add the animation
+					add(new BattleAnimation(8, 25, DataTable.SkillAnimation[skillID])); // add the animation
 					
 					// remove HP
 					
 					enemyHP -= calculatedDamage;
 				}
 			}
-			else if (target == 1) // enemy attack
+			if (target == 1) // enemy
 			{
-				tempAttack = enemyAttack;
+				calculatedDamage2 = DataTable.SkillSub[skillID];
 				
-				if (enemyAttackBonus)
-					tempAttack *= 1.25; // attack bonus!
-				
-				myHit = true;
-								
 				if(multipleFlag == 0) // to avoid infinite loops
 					enemyNumberAttacks = DataTable.SkillNumber[skillID];
-				
-				calculatedDamage2 = (DataTable.SkillSub[skillID]) + (Math.random() * (DataTable.SkillSubAlt[skillID] * 1.5));
-				calculatedDamage2 *= ((tempAttack / 1.80) - (playerDefense / 3.5)) * DataTable.SkillSubAlt[skillID];
-				calculatedDamage2 += Math.random() * (tempAttack / 6);
-				calculatedDamage2 -= (playerDefense / 4.5);
-				calculatedDamage2 -= (calculatedDamage2 / 9);
-				
-				if (calculatedDamage2 < 0)
-					calculatedDamage2 = 0;
-				
+					
 				animationTimer = DataTable.SkillTime[skillID];
 				animationHalf = animationTimer / 1.5;
 				animation = true;
@@ -1171,12 +1215,108 @@ package
 			}
 		}
 		
+		private function meleeAttack(skillID:int = 0, target:int = 0, multipleFlag:int = 0, vampire:int = 0 ):void
+		{
+			var tempAttack:int;
+			var myHit:Boolean;
+			
+			if (target == 0) // player attack
+			{
+				tempAttack = playerAttack + playerAttackBonus;
+				
+				
+				myHit = true;
+				
+				//calculatedDamage = (DataTable.SkillSub[skillID] + (Math.random() * DataTable.SkillSub[skillID] * 3));
+				//calculatedDamage *= DataTable.SkillSub[skillID] * StatsTable.MonsterAttack[playerMonsterID];
+				
+				if(multipleFlag == 0) // to avoid infinite loops
+					playerNumberAttacks = DataTable.SkillNumber[skillID];
+				
+				calculatedDamage = (DataTable.SkillSub[skillID]) + (Math.random() * (DataTable.SkillSubAlt[skillID] * 1.5));
+				calculatedDamage *= ((tempAttack / 1.85) - (enemyDefense / 4)) * DataTable.SkillSubAlt[skillID];
+				calculatedDamage += Math.random() * ((tempAttack / 6) * DataTable.SkillSubAlt[skillID]);
+				calculatedDamage += Math.random() * (calculatedDamage / 10);
+				calculatedDamage -= ((enemyDefense + enemyDefenseBonus) / 4.5);
+				
+				if (calculatedDamage < 0)
+					calculatedDamage = 0;
+				
+				animationTimer = DataTable.SkillTime[skillID];
+				animationHalf = animationTimer / 1.5;
+				animation = true;
+				
+				if (Math.random() * 100 > DataTable.SkillAccuracy[skillID])
+					myHit = false;
+				
+				// remove the HP
+				
+				if (myHit == false)
+					calculatedDamage = -2;
+				else
+				{
+					FlxG.play(SndMelee);
+					add(new BattleAnimation(2, 17, DataTable.SkillAnimation[skillID])); // add the animation
+					
+					// remove HP
+					
+					if (vampire == 1)
+						restoreHP(calculatedDamage / 2.5, 0);
+					enemyHP -= calculatedDamage;
+				}
+			}
+			else if (target == 1) // enemy attack
+			{
+				tempAttack = enemyAttack + enemyAttackBonus;
+				
+				myHit = true;
+								
+				if(multipleFlag == 0) // to avoid infinite loops
+					enemyNumberAttacks = DataTable.SkillNumber[skillID];
+				
+				calculatedDamage2 = (DataTable.SkillSub[skillID]) + (Math.random() * (DataTable.SkillSubAlt[skillID] * 1.5));
+				calculatedDamage2 *= ((tempAttack / 1.80) - (playerDefense / 4)) * DataTable.SkillSubAlt[skillID];
+				calculatedDamage2 += Math.random() * (tempAttack / 6);
+				calculatedDamage2 -= ((playerDefense + playerDefenseBonus) / 4.5);
+				//calculatedDamage2 -= (calculatedDamage2 / 9);
+				
+				if (calculatedDamage2 < 0)
+					calculatedDamage2 = 0;
+				
+				animationTimer = DataTable.SkillTime[skillID];
+				animationHalf = animationTimer / 1.5;
+				animation = true;
+				
+				if (Math.random() * 100 > DataTable.SkillAccuracy[skillID])
+					myHit = false;
+				
+				// remove the HP
+				
+				if (myHit == false)
+					calculatedDamage2 = -2;
+				else
+				{
+					FlxG.play(SndMelee);
+					add(new BattleAnimation(90, 50, DataTable.SkillAnimation[skillID])); // add the animation
+					
+					// remove HP
+					if (vampire == 1)
+						restoreHP(calculatedDamage / 2, 1);
+					playerHP -= calculatedDamage2;
+				}
+			}
+		}
+		
 		private function enemyDecision():void
 		{
 			// figure out some skill randomizer.. but for now, something arbitrary
 			
-				enemySkillChoice = 0;
-				enemyUseSkill();
+			var mySkill:int;
+			
+			mySkill = Math.random() * enemySkills.length - 1;
+			enemySkillChoice = enemySkills[mySkill];
+			
+			enemyUseSkill();
 		}
 		
 		private function enemyUseSkill(multipleFlag:int = 0):void
@@ -1188,6 +1328,14 @@ package
 			if (DataTable.SkillType[mySkillID] == 0)
 			{
 				meleeAttack(mySkillID, 1, multipleFlag);
+			}
+			else if (DataTable.SkillType[mySkillID] == 2)
+			{
+				specialSkill(mySkillID, 1);
+			}
+			else if (DataTable.SkillType[mySkillID] == 4)
+			{
+				magicAttack(mySkillID, 1, multipleFlag);
 			}
 			else
 			{

@@ -1,0 +1,17 @@
+240 x 224 res
+
+Assign Skills to mons
+Assign Stats to mons
+Reprogram monster display to be based on a sprite sheet
+Skills screen in menu
+GAme
+
+Save system -> add var initialization to static functions, add a delete save option and load game automatically
+
+arrays to save:
+
+monster roster
+switches
+treasures
+inventory
+playtime

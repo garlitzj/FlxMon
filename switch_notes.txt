@@ -1,0 +1,27 @@
+treasure: 0, 1, 2
+
+trigger:
+
+switch: 0(dr gerund), 1 (got first)
+
+
+-- battle flow --
+
+bar values are increased according to agility
+
+when bar is full, turn = true; bars freeze; if both bars freeze, arbitrarily unfreeze one
+
+sub menu = 1; loading bar area turns into 4 options
+
+(if you skills are open, sub menu = 2)
+
+make choice
+
+timer = animation time
+
+freeze
+
+timer is undone
+
+unfreeze, set bar to 0
+

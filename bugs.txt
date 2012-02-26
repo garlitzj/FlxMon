@@ -1,0 +1,4 @@
+BUGS:
+
+Holding down X will bring up the menu but also exit it. Need two separate key presses
+When re-entering the screen next to the edge of the camera, the screen scrolls as if the player had just walked over

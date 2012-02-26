@@ -1,0 +1,66 @@
+::Melee (most are variations of the same thing)::
+
+Claw
+Strike
+Smash: higher power, lower success
+DoubleSlice: attack twice
+Punch
+Fury: several weak attacks with lower success rate
+Chomp
+Cut
+Pounce
+Smack
+Blunt: hit enemy with blunt object
+Slash: a more powerful claw
+Deathblow: highest attack, low accuracy; costly
+
+::Buff::
+
+Attack Up
+Defense Up
+Special Up
+Speed Up
+//Focus: increases accuracy
+//Shield: nullify physical attacks for several turns, very costly
+//Barrier: nullify special attacks for several turns, very costly
+Invis: Increase evade
+//Anger: increase attack at the expense of defense
+//Zone: increase special greatly at the expense of defense and attack
+
+::Special::
+
+Poison
+//Stun
+BloodSuck: suck some of the enemy's hp, physical damage
+Absorb: suck some of the enemy's hp, special damage
+Ooze: Slows down the enemy and lowers accuracy
+Reap: attempt instant death
+Special Absorb: absorb MP
+//Stare: can stun and lower defense
+Spook: lower defense
+Taunt: lower accuracy
+Laugh: lower attack
+// Sting: poison chance + melee damage
+Touch: melee damage + hp
+Flash: lower accuracy
+//Annoy: lower accuracy, increase attack
+Revenge: attempt to attack for amount of hp missing; low success rate
+
+::Heal::
+
+Antidote: remove poison
+Heal: heal some hp
+HealMore
+Regen: restore hp each round if successful
+
+
+::Magic::
+
+Fireball
+//Chill
+//Lightning
+DarkBall
+Laser
+//EarthFury
+//Rot: may cause poison too
+//ShadowAttack: causes fixed amount of damage

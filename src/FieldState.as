@@ -227,14 +227,14 @@ package
 				teleporters.add(new Teleporter(24 * 16, 14 * 16, 1, 1, 1, 24 * 16, 16 * 16, p));
 				teleporters.add(new Teleporter(6 * 16, 21 * 16, 1, 1, 1, 12 * 16, 25 * 16, p));
 				teleporters.add(new Teleporter(14 * 16, -1 * 16, 2, 2, 2, 94 * 16, 88 * 16, p));
-				solids.add(new NPC(13 * 16, 5 * 16, p, 1, message_box));
-				solids.add(new NPC(5 * 16, 22 * 16, p, 2, message_box));
-				solids.add(new NPC(14 * 16, 1 * 16, p, 0, message_box, 2, 0, 1, 1));
-				solids.add(new NPC(15 * 16, 1 * 16, p, 0, message_box, 2, 0, 1, 1));
-				solids.add(new NPC(13 * 16, 2 * 16, p, 14, message_box, 2, 0, 1, -1, 1));
-				solids.add(new NPC(16 * 16, 2 * 16, p, 14, message_box, 2, 0, 1, -1, 1));
-				solids.add(new NPC(16 * 16, 11 * 16, p, 8, message_box, 3));
-				solids.add(new TreasureBox(2 * 16, 21 * 16, 0, 1, 4, message_box, p));
+				solids.add(new NPC(13, 5, p, "Testing", message_box));
+				solids.add(new NPC(5, 22, p, "Testing", message_box));
+				solids.add(new NPC(14, 1, p, "Testing", message_box, 2, 0, 1, 1));
+				solids.add(new NPC(15, 1, p, "Testing", message_box, 2, 0, 1, 1));
+				solids.add(new NPC(13, 2, p, "Testing", message_box, 2, 0, 1, -1, 1));
+				solids.add(new NPC(16, 2, p, "Testing", message_box, 2, 0, 1, -1, 1));
+				solids.add(new NPC(16, 11, p, "Testing", message_box, 3));
+				solids.add(new TreasureBox(2, 21, 0, 1, 4, message_box, p));
 				
 				break;
 				case 1: // town 1 interior
@@ -246,16 +246,16 @@ package
 				teleporters.add(new Teleporter(24 * 16, 26 * 16, 2, 2, 2, 85 * 16, 78 * 16, p)); 
 				teleporters.add(new Teleporter(33 * 16, 11 * 16, 1, 1, 1, 7 * 16, 15 * 16, p)); // stairs
 				teleporters.add(new Teleporter(8 * 16, 15 * 16, 1, 1, 1, 33 * 16, 12 * 16, p)); 
-				solids.add(new NPC(2 * 16, 3 * 16, p, 6, message_box, 1));
-				solids.add(new NPC(16 * 16, 11 * 16, p, 5, message_box, 5, 0, 1));
-				solids.add(new NPC(24 * 16, 2 * 16, p, 7, message_box, 4, 1));
-				solids.add(new NPC(25 * 16, 20 * 16, p, 9, message_box, 4));
-				solids.add(new NPC(34 * 16, 2 * 16, p, 9, message_box, 1));
-				solids.add(new NpcEvent(3 * 16, 22 * 16, p, 11, message_box, 6, 0, 0));
-				solids.add(new Orb(3 * 16, 21 * 16, message_box, p, 8, 0, 1));
-				solids.add(new NPC(5 * 16, 22 * 16, p, 12, message_box, 6, 0, 1, -1, 0));
-				solids.add(new ShopKeeper(34 * 16, 3 * 16, 0, p, map_id));
-				solids.add(new TreasureBox(3 * 16, 11 * 16, 2, 0, 50, message_box, p));
+				solids.add(new NPC(2, 3, p, "Testing", message_box, 1));
+				solids.add(new NPC(16, 11, p, "Testing", message_box, 5, 0, 1));
+				solids.add(new NPC(24, 2, p, "Testing", message_box, 4, 1));
+				solids.add(new NPC(25, 20, p, "Testing", message_box, 4));
+				solids.add(new NPC(34, 2, p, "Testing", message_box, 1));
+				solids.add(new NpcEvent(3, 22, p, "Hey I'm cool", message_box, 6, 0, 0));
+				solids.add(new Orb(3, 21, message_box, p, 8, 0, 1, "Sup"));
+				solids.add(new NPC(5, 22, p, "Testing", message_box, 6, 0, 1, -1, 0));
+				solids.add(new ShopKeeper(34, 3, 0, p, map_id));
+				solids.add(new TreasureBox(3, 11, 2, 0, 50, message_box, p));
 				
 				break;
 				
@@ -266,17 +266,17 @@ package
 				teleporters.add(new Teleporter(20 * 16, 77 * 16, 1, 2, 4, 28 * 16, 14 * 16, p));
 				teleporters.add(new Teleporter(85 * 16, 87 * 16, 1, 1, 5, 36 * 16, 29 * 16, p));
 				
-				solids.add(new NPC(96 * 16, 73 * 16, p, 3, message_box));
-				solids.add(new NPC(94 * 16, 67 * 16, p, 4, message_box));
-				solids.add(new NPC(95 * 16, 67 * 16, p, 4, message_box));
+				solids.add(new NPC(96, 73, p, "Testing", message_box));
+				solids.add(new NPC(94, 67, p, "Testing", message_box));
+				solids.add(new NPC(95, 67, p, "Testing", message_box));
 				
 				break; 
 				
 				case 3: // region 1 caves
 				teleporters.add(new Teleporter(64 * 16, 62 * 16, 2, 2, 2, 82 * 16, 75 * 16, p));
-				solids.add(new TreasureBox(55 * 16, 47 * 16, 1, 0, 15, message_box, p));
-				solids.add(new Orb(64 * 16, 38 * 16, message_box, p, 5, 2, -1, 13, 4));
-				solids.add(new Orb(65 * 16, 38 * 16, message_box, p, 0, 1));
+				solids.add(new TreasureBox(55, 47, 1, 0, 15, message_box, p));
+				solids.add(new Orb(64, 38, message_box, p, 5, 2, -1, "Arrggghh", 4));
+				solids.add(new Orb(65, 38, message_box, p, 0, 1));
 				break;
 				
 				// town 2

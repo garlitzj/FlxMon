@@ -17,7 +17,7 @@ package
 		{
 			switch_id = treasure_id;
 				
-			super(X, Y, p, -1, msg_box, -1);
+			super(X, Y, p, "", msg_box, -1);
 			loadGraphic(ImgMe);
 			
 			solid = true;

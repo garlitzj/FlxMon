@@ -6,16 +6,17 @@ package
 	{
 		private var myMonsterID:int;
 		private var myMonsterRequirement:int;
-		private var mySwitch:int;
+		//private var mySwitch:int;
 		private var myItem:int;
 		private var addMonster:Boolean = false;
-		private var myMessageID:int;
+		private var myMessageID:String;
 		
 		// condition: 0 = free, 1 == fight; 2 = item in battle
 		// Switch ID simply turns on a switch... the only way to get rid of an orb event by having the monster
 		
-		public function Orb(X:int, Y:int, msg_box:FlxGroup, p:Player, monsterID:int, monsterCondition:int = 0, switchID:int = -1, my_msg:int = 13, monsterItem:int = -1) 
+		public function Orb(X:int, Y:int, msg_box:FlxGroup, p:Player, monsterID:int, monsterCondition:int = 0, switchID:int = -1, my_msg:String = "", monsterItem:int = -1) 
 		{
+			my_msg += "#Kim negotiated with the#monster. And...#...";
 			super(X, Y, p, my_msg, msg_box, 7, 1, 0);
 			myMonsterID = monsterID;
 			myMonsterRequirement = monsterCondition;
@@ -49,7 +50,7 @@ package
 		
 		override protected function talkTo(mydir:int = 0):void
 		{
-			text = DataTable.Messages[myMessageID];
+			text = myMessageID.split("#");
 			
 			var myMessage:Array = new Array()
 			myMessage.length = text.length;

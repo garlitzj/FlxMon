@@ -14,7 +14,7 @@ package
 		
 		public function ShopKeeper(X:int, Y:int, shopID:int, pref:Player, mapID:int) 
 		{
-			super(X, Y, ImgMe);
+			super(X * 16, Y * 16, ImgMe);
 			
 			solid = true;
 			fixed = true;
